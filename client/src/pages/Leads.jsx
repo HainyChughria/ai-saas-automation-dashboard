@@ -1,19 +1,16 @@
 import { useState } from "react"
 
-function Leads() {
-  const [leads, setLeads] = useState([])
+function Leads({ leads, setLeads }) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
 
-  const addLead = (e) => {
-    e.preventDefault()
+  const addLead = () => {
     if (!name || !email) return
 
     const newLead = {
-      id: Date.now(),
       name,
       email,
-      aiReply: ""
+      aiReply: `Hi ${name}, thanks for your interest! Our AI automation platform can help you scale your business efficiently.`
     }
 
     setLeads([...leads, newLead])
@@ -21,73 +18,43 @@ function Leads() {
     setEmail("")
   }
 
-  const generateReply = (id) => {
-    const updatedLeads = leads.map((lead) => {
-      if (lead.id === id) {
-        return {
-          ...lead,
-          aiReply: `Hi ${lead.name}, thank you for your interest! Our AI system would love to connect with you soon.`
-        }
-      }
-      return lead
-    })
-
-    setLeads(updatedLeads)
-  }
-
   return (
-    <div style={{ padding: "40px", color: "white" }}>
-      <h1>Leads Management</h1>
+    <div>
+      <h2 className="text-3xl font-bold mb-6">Leads</h2>
 
-      <form onSubmit={addLead} style={{ marginTop: "20px" }}>
+      <div className="bg-slate-100 dark:bg-slate-900 p-6 rounded-xl mb-10 shadow-lg">
         <input
-          type="text"
-          placeholder="Lead Name"
+          placeholder="Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ padding: "10px", marginRight: "10px" }}
+          onChange={e => setName(e.target.value)}
+          className="w-full p-3 mb-4 rounded bg-white dark:bg-slate-800"
         />
 
         <input
-          type="email"
-          placeholder="Lead Email"
+          placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ padding: "10px", marginRight: "10px" }}
+          onChange={e => setEmail(e.target.value)}
+          className="w-full p-3 mb-4 rounded bg-white dark:bg-slate-800"
         />
 
-        <button type="submit" style={{ padding: "10px 20px" }}>
-          Add Lead
+        <button
+          onClick={addLead}
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg"
+        >
+          Add Lead + Generate AI Reply
         </button>
-      </form>
+      </div>
 
-      <div style={{ marginTop: "30px" }}>
-        {leads.map((lead) => (
-          <div key={lead.id} style={{
-            backgroundColor: "#2c2c2c",
-            padding: "15px",
-            marginBottom: "10px",
-            borderRadius: "8px"
-          }}>
-            <p><strong>{lead.name}</strong></p>
-            <p>{lead.email}</p>
+      <div className="space-y-6">
+        {leads.map((lead, index) => (
+          <div key={index} className="p-6 rounded-xl bg-slate-100 dark:bg-slate-900 shadow-lg">
+            <h3 className="text-xl font-semibold">{lead.name}</h3>
+            <p className="text-gray-500 mb-4">{lead.email}</p>
 
-            <button
-              onClick={() => generateReply(lead.id)}
-              style={{
-                marginTop: "10px",
-                padding: "8px 15px",
-                cursor: "pointer"
-              }}
-            >
-              Generate AI Reply
-            </button>
-
-            {lead.aiReply && (
-              <p style={{ marginTop: "10px", color: "#4CAF50" }}>
-                {lead.aiReply}
-              </p>
-            )}
+            <div className="bg-white dark:bg-slate-800 p-4 rounded-lg">
+              <p className="font-medium mb-2">AI Reply:</p>
+              <p>{lead.aiReply}</p>
+            </div>
           </div>
         ))}
       </div>

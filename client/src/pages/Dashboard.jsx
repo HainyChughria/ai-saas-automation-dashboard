@@ -1,34 +1,29 @@
-function Dashboard() {
-  const stats = [
-    { title: "Total Leads", value: 128 },
-    { title: "Emails Sent", value: 96 },
-    { title: "AI Replies Generated", value: 54 },
-    { title: "Conversion Rate", value: "12%" }
-  ]
+function Dashboard({ leads }) {
+  const total = leads.length
+  const aiReplies = leads.filter(l => l.aiReply).length
+  const rate = total === 0 ? 0 : Math.round((aiReplies / total) * 100)
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Dashboard Overview</h1>
+    <div>
+      <h2 className="text-3xl font-bold mb-8">Dashboard Overview</h2>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: "20px",
-        marginTop: "30px"
-      }}>
-        {stats.map((item, index) => (
-          <div key={index} style={{
-            backgroundColor: "#2c2c2c",
-            padding: "20px",
-            borderRadius: "10px",
-            color: "white"
-          }}>
-            <h3>{item.title}</h3>
-            <p style={{ fontSize: "24px", marginTop: "10px" }}>
-              {item.value}
-            </p>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+        <div className="p-6 rounded-xl bg-slate-100 dark:bg-slate-900 shadow-lg">
+          <p className="text-gray-500">Total Leads</p>
+          <h3 className="text-3xl font-bold">{total}</h3>
+        </div>
+
+        <div className="p-6 rounded-xl bg-slate-100 dark:bg-slate-900 shadow-lg">
+          <p className="text-gray-500">AI Replies</p>
+          <h3 className="text-3xl font-bold">{aiReplies}</h3>
+        </div>
+
+        <div className="p-6 rounded-xl bg-slate-100 dark:bg-slate-900 shadow-lg">
+          <p className="text-gray-500">Engagement</p>
+          <h3 className="text-3xl font-bold">{rate}%</h3>
+        </div>
+
       </div>
     </div>
   )

@@ -3,27 +3,31 @@ import { Link, useLocation } from "react-router-dom"
 function Navbar() {
   const location = useLocation()
 
-  const linkStyle = (path) => ({
-    color: location.pathname === path ? "#4CAF50" : "white",
-    textDecoration: "none",
-    fontWeight: location.pathname === path ? "bold" : "normal"
-  })
+  const linkStyle = (path) =>
+    `px-4 py-2 rounded-lg transition ${
+      location.pathname === path
+        ? "bg-indigo-600 text-white"
+        : "text-slate-300 hover:bg-slate-800"
+    }`
 
   return (
-    <nav style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "15px 40px",
-      backgroundColor: "#1f1f1f",
-      color: "white"
-    }}>
-      <h2 style={{ margin: 0 }}>AI SaaS</h2>
+    <nav className="bg-slate-900 border-b border-slate-800 px-8 py-4 flex justify-between items-center">
+      <h1 className="text-xl font-bold text-white">
+        AI SaaS
+      </h1>
 
-      <div style={{ display: "flex", gap: "30px" }}>
-        <Link to="/" style={linkStyle("/")}>Dashboard</Link>
-        <Link to="/leads" style={linkStyle("/leads")}>Leads</Link>
-        <Link to="/settings" style={linkStyle("/settings")}>Settings</Link>
+      <div className="flex gap-4">
+        <Link to="/dashboard" className={linkStyle("/dashboard")}>
+          Dashboard
+        </Link>
+
+        <Link to="/leads" className={linkStyle("/leads")}>
+          Leads
+        </Link>
+
+        <Link to="/settings" className={linkStyle("/settings")}>
+          Settings
+        </Link>
       </div>
     </nav>
   )
