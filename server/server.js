@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import mongoose from "mongoose"
+import leadsRoute from "./routes/leads.js"
 
 dotenv.config()
 
@@ -10,31 +12,16 @@ const PORT = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
 
-// Temporary in-memory storage
-let leads = []
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB Connected 🚀"))
+.catch(err => console.log(err))
 
-// Get all leads
-app.get("/api/leads", (req, res) => {
-  res.json(leads)
-})
+// Routes
+app.use("/api/leads", leadsRoute)
 
 app.get("/", (req, res) => {
   res.send("API is running 🚀")
-})
-
-// Add new lead
-app.post("/api/leads", (req, res) => {
-  const { name, email } = req.body
-
-  const newLead = {
-    id: Date.now(),
-    name,
-    email,
-    aiReply: `Hi ${name}, thanks for your interest! Our AI automation platform can help scale your business.`
-  }
-
-  leads.push(newLead)
-  res.status(201).json(newLead)
 })
 
 app.listen(PORT, () => {
