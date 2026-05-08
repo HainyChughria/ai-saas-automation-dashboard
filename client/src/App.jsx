@@ -1,58 +1,73 @@
-import { useState } from "react"
+import { Routes, Route, Link } from "react-router-dom"
+
 import Dashboard from "./pages/Dashboard"
 import Leads from "./pages/Leads"
 import Settings from "./pages/Settings"
+import PublicLeadForm from "./pages/PublicLeadForm"
 
 function App() {
-  const [page, setPage] = useState("dashboard")
-  const [leads, setLeads] = useState([])
-
   return (
-    <div className="min-h-screen bg-white text-black">
+    <Routes>
 
-      {/* Layout */}
-      <div className="flex">
+      {/* Public Customer Form */}
+      <Route path="/lead-form" element={<PublicLeadForm />} />
 
-        {/* Sidebar */}
-        <div className="w-64 h-screen bg-slate-100 p-6 shadow-lg">
-          <h1 className="text-2xl font-bold mb-10">AI SaaS</h1>
+      {/* Dashboard Layout */}
+      <Route
+        path="/*"
+        element={
+          <div className="flex min-h-screen bg-slate-50">
 
-          <div className="space-y-4">
-            <button
-              onClick={() => setPage("dashboard")}
-              className="block w-full text-left hover:text-blue-500"
-            >
-              Dashboard
-            </button>
+            {/* Sidebar */}
+            <aside className="w-64 bg-slate-900 text-white p-6">
 
-            <button
-              onClick={() => setPage("leads")}
-              className="block w-full text-left hover:text-blue-500"
-            >
-              Leads
-            </button>
+              <h1 className="text-2xl font-bold mb-10">
+                AI SaaS
+              </h1>
 
-            <button
-              onClick={() => setPage("settings")}
-              className="block w-full text-left hover:text-blue-500"
-            >
-              Settings
-            </button>
+              <nav className="flex flex-col gap-4">
+
+                <Link
+                  to="/"
+                  className="hover:bg-slate-800 px-4 py-3 rounded-xl transition"
+                >
+                  Dashboard
+                </Link>
+
+                <Link
+                  to="/leads"
+                  className="hover:bg-slate-800 px-4 py-3 rounded-xl transition"
+                >
+                  Leads
+                </Link>
+
+                <Link
+                  to="/settings"
+                  className="hover:bg-slate-800 px-4 py-3 rounded-xl transition"
+                >
+                  Settings
+                </Link>
+
+              </nav>
+
+            </aside>
+
+            {/* Main Content */}
+            <main className="flex-1 p-8">
+
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/leads" element={<Leads />} />
+                <Route path="/settings" element={<Settings />} />
+              </Routes>
+
+            </main>
+
           </div>
+        }
+      />
 
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 p-10">
-
-          {page === "dashboard" && <Dashboard leads={leads} />}
-          {page === "leads" && <Leads leads={leads} setLeads={setLeads} />}
-          {page === "settings" && <Settings />}
-
-        </div>
-
-      </div>
-    </div>
+    </Routes>
   )
 }
 

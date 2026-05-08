@@ -13,12 +13,12 @@ router.get("/", async (req, res) => {
   }
 })
 
-// POST new lead (with AI reply)
+// POST new lead
 router.post("/", async (req, res) => {
   try {
     const { name, email, message } = req.body
 
-    const aiReply = `Hi ${name}, thanks for reaching out! Our team received your message and will contact you shortly.`
+    const aiReply = `Hi ${name}, thanks for reaching out! Our team will contact you soon.`
 
     const newLead = new Lead({
       name,
@@ -28,10 +28,27 @@ router.post("/", async (req, res) => {
     })
 
     await newLead.save()
-
     res.json(newLead)
+
   } catch (error) {
     res.status(500).json({ error: "Failed to create lead" })
+  }
+})
+
+// ✅ UPDATE STATUS
+router.patch("/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body
+
+    const updatedLead = await Lead.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    )
+
+    res.json(updatedLead)
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update status" })
   }
 })
 

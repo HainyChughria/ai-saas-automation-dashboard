@@ -1,10 +1,27 @@
 import mongoose from "mongoose"
 
 const leadSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String,
-  aiReply: String,
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  message: {
+    type: String,
+    default: ""
+  },
+  aiReply: {
+    type: String,
+    default: ""
+  },
+  status: {
+    type: String,
+    enum: ["NEW", "CONTACTED", "CLOSED"],
+    default: "NEW"
+  },
   createdAt: {
     type: Date,
     default: Date.now
