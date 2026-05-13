@@ -6,6 +6,8 @@ import leadsRoute from "./routes/leads.js"
 
 dotenv.config()
 
+console.log(process.env.GEMINI_API_KEY)
+
 const app = express()
 const PORT = process.env.PORT || 5000
 

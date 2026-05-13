@@ -35,8 +35,9 @@ function PublicLeadForm() {
       })
 
     } catch (error) {
-      console.error("Lead submission failed")
-    } finally {
+  console.error(error)
+  alert("Lead submission failed")
+} finally {
       setLoading(false)
     }
   }
